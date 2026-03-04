@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Sparkles } from '@react-three/drei'
+import { Sparkles } from '@react-three/drei'
 import { EffectComposer, Bloom, ChromaticAberration, Vignette, Noise } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import * as THREE from 'three'
@@ -202,26 +202,11 @@ export function SuitAssembly() {
                 style={{ background: 'transparent' }}
             >
                 <Suspense fallback={null}>
-                    {/* Lighting */}
-                    <ambientLight intensity={0.08} />
-                    <directionalLight
-                        position={[5, 8, 5]}
-                        intensity={1.2}
-                        color="#e8f4f8"
-                    />
-                    <directionalLight
-                        position={[-5, -3, -5]}
-                        intensity={0.6}
-                        color="#00d4ff"
-                    />
-                    <directionalLight
-                        position={[0, -5, 5]}
-                        intensity={0.3}
-                        color="#ffd700"
-                    />
-
-                    {/* Environment reflections */}
-                    <Environment preset="city" environmentIntensity={0.15} />
+                    {/* Lighting - Local only, no external HDRI textures to prevent Suspense hang */}
+                    <ambientLight intensity={0.5} color="#8bb8cc" />
+                    <directionalLight position={[5, 8, 5]} intensity={1.5} color="#e8f4f8" />
+                    <directionalLight position={[-5, -3, -5]} intensity={0.8} color="#00d4ff" />
+                    <directionalLight position={[0, -5, 5]} intensity={0.5} color="#ffd700" />
 
                     {/* Suit Fragments */}
                     <group>
