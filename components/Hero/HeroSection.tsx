@@ -29,26 +29,23 @@ export function HeroSection() {
     const scrollIndicatorRef = useRef<HTMLDivElement>(null)
     const timelineRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
-    const {
-        isLoading,
-        heroPhase,
-        setHeroPhase,
-        setSuitAssembled,
-        setActiveSection,
-    } = useStore()
+    const { isLoading, heroPhase, setActiveSection } = useStore()
 
     // Phase transition scheduler
     const schedulePhase = useCallback(
         (phase: HeroPhase, delayMs: number) => {
-            const id = setTimeout(() => setHeroPhase(phase), delayMs)
+            const id = setTimeout(() => useStore.getState().setHeroPhase(phase), delayMs)
             timelineRef.current.push(id)
         },
-        [setHeroPhase]
+        [] // no deps — uses getState() which is always stable
     )
 
     // === MASTER TIMELINE ===
     useEffect(() => {
         if (isLoading) return // wait for loader to finish
+
+        // Get stable function refs from store to prevent re-trigger loops
+        const { setHeroPhase, setSuitAssembled } = useStore.getState()
 
         // Clear any previous scheduled phases
         timelineRef.current.forEach(clearTimeout)
@@ -79,7 +76,9 @@ export function HeroSection() {
         return () => {
             timelineRef.current.forEach(clearTimeout)
         }
-    }, [isLoading, setHeroPhase, setSuitAssembled, schedulePhase])
+        // Only re-run when isLoading changes (when loader completes)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading])
 
     // === SCROLL INDICATOR GSAP ANIMATION ===
     useEffect(() => {

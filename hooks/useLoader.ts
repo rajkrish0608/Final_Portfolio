@@ -4,12 +4,15 @@ import { useEffect, useRef } from 'react'
 import { useStore } from '@/lib/store'
 
 export function useLoader() {
-    const { setLoaderDone, setLoaderProgress } = useStore()
+    // Use getState() to get stable function references that never change
+    // This prevents the useEffect from re-running when Zustand updates state
     const started = useRef(false)
 
     useEffect(() => {
         if (started.current) return
         started.current = true
+
+        const { setLoaderDone, setLoaderProgress } = useStore.getState()
 
         let progress = 0
         const interval = setInterval(() => {
@@ -27,5 +30,7 @@ export function useLoader() {
         }, 120)
 
         return () => clearInterval(interval)
-    }, [setLoaderDone, setLoaderProgress])
+        // Empty dependency array — runs once on mount only
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 }
