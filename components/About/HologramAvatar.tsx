@@ -104,20 +104,24 @@ export function HologramAvatar() {
                         stroke="#00d4ff" strokeWidth="1.5" fill="#00d4ff0a" />
                     {/* Arc reactor on chest */}
                     <circle cx="32" cy="40" r="4" stroke="#00d4ff" strokeWidth="1.5" fill="#00d4ff33" />
-                    <motion.circle cx="32" cy="40" r="4"
-                        fill="#00d4ff"
-                        opacity={0.8}
-                        animate={{ r: [4, 6, 4], opacity: [0.8, 0.2, 0.8] }}
+                    <motion.g
+                        initial={{ opacity: 0.8 }}
+                        animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0.2, 0.8] }}
                         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                    />
+                        style={{ originX: '32px', originY: '40px' }}
+                    >
+                        <circle cx="32" cy="40" r="4" fill="#00d4ff" />
+                    </motion.g>
                     {/* Shoulders */}
                     <line x1="20" y1="28" x2="10" y2="36" stroke="#00d4ff" strokeWidth="1.5" strokeOpacity="0.6" />
                     <line x1="44" y1="28" x2="54" y2="36" stroke="#00d4ff" strokeWidth="1.5" strokeOpacity="0.6" />
                     {/* HUD scan lines */}
-                    <motion.line x1="14" y1="20" x2="50" y2="20"
-                        stroke="#00d4ff" strokeWidth="0.5" strokeOpacity="0.3"
-                        animate={{ y1: [20, 60, 20], y2: [20, 60, 20] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }} />
+                    <motion.g
+                        animate={{ y: [0, 40, 0] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                    >
+                        <line x1="14" y1="20" x2="50" y2="20" stroke="#00d4ff" strokeWidth="0.5" strokeOpacity="0.3" />
+                    </motion.g>
                 </svg>
 
                 {/* Corner targeting brackets */}
