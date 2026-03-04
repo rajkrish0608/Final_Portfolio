@@ -3,6 +3,7 @@ import './globals.css'
 import { CursorEffect } from '@/components/shared/CursorEffect'
 import { ArcReactorLoader } from '@/components/Loader/ArcReactorLoader'
 import { NavBar } from '@/components/Navigation/NavBar'
+import { ScrollProgressHUD } from '@/components/shared/ScrollProgressHUD'
 
 export const metadata: Metadata = {
   title: 'Raj Krish | Robotics & AIML Portfolio',
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen relative selection:bg-[#00d4ff44] selection:text-[#e8f4f8]">
         <CursorEffect />
         <ArcReactorLoader />
+        <ScrollProgressHUD />
         <NavBar />
         {children}
       </body>
