@@ -4,6 +4,7 @@ import { SkillsSection } from '@/components/Skills/SkillsSection'
 import { ProjectsSection } from '@/components/Projects/ProjectsSection'
 import { MissionTimeline } from '@/components/Achievements/MissionTimeline'
 import { DeploymentLog } from '@/components/Experience/DeploymentLog'
+import { ContactSection } from '@/components/Contact/ContactSection'
 
 export default function Home() {
   return (
@@ -14,9 +15,7 @@ export default function Home() {
       <ProjectsSection />
       <MissionTimeline />
       <DeploymentLog />
-
-      {/* Remaining sections — pending */}
-      <section id="contact" className="h-40 w-full flex items-center justify-center border-t border-[#00d4ff11]"><span className="font-mono-hud text-xs text-[#00d4ff44]">[ CONTACT — PENDING ]</span></section>
+      <ContactSection />
     </main>
   )
 }
