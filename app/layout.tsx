@@ -2,10 +2,19 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { CursorEffect } from '@/components/shared/CursorEffect'
 import { ArcReactorLoader } from '@/components/Loader/ArcReactorLoader'
+import { NavBar } from '@/components/Navigation/NavBar'
 
 export const metadata: Metadata = {
   title: 'Raj Krish | Robotics & AIML Portfolio',
-  description: 'Personal portfolio of Raj Krish, a Robotics and AIML specialist.',
+  description:
+    'Personal portfolio of Raj Krish — B.Tech Robotics & AIML specialist. BCI, Autonomous Drones, Quantum Computing.',
+  keywords: ['Robotics', 'AIML', 'Portfolio', 'Raj Krish', 'Machine Learning', 'BCI'],
+  authors: [{ name: 'Raj Krish' }],
+  openGraph: {
+    title: 'Raj Krish | Robotics & AIML Portfolio',
+    description: 'Engineering Intelligence. Building the Future.',
+    type: 'website',
+  },
 }
 
 export const viewport: Viewport = {
@@ -23,6 +32,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen relative selection:bg-[#00d4ff44] selection:text-[#e8f4f8]">
         <CursorEffect />
         <ArcReactorLoader />
+        <NavBar />
         {children}
       </body>
     </html>
