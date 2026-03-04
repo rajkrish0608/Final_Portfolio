@@ -184,7 +184,10 @@ function Rig() {
 // ==================== MAIN COMPONENT ====================
 export function SuitAssembly() {
     const { isSuitAssembled } = useStore()
-    const fragments = useMemo(() => generateFragments(), [])
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    const allFragments = useMemo(() => generateFragments(), [])
+    // On mobile, only render 10 fragments for performance
+    const fragments = useMemo(() => isMobile ? allFragments.slice(0, 10) : allFragments, [isMobile, allFragments])
 
     return (
         <div className="absolute inset-0 z-0">
@@ -195,7 +198,7 @@ export function SuitAssembly() {
                     antialias: false,
                     alpha: true,
                 }}
-                dpr={[1, 1.5]}
+                dpr={isMobile ? [1, 1] : [1, 1.5]}
                 style={{ background: 'transparent' }}
             >
                 <Suspense fallback={null}>
@@ -256,7 +259,7 @@ export function SuitAssembly() {
                     <Rig />
 
                     {/* Post-Processing */}
-                    <EffectComposer multisampling={4}>
+                    <EffectComposer multisampling={isMobile ? 0 : 4}>
                         <Bloom
                             luminanceThreshold={0.4}
                             luminanceSmoothing={0.9}

@@ -68,9 +68,9 @@ export function ContactSection() {
             ref={sectionRef}
             className="relative w-full py-24 md:py-32 bg-[#0a0a0f] overflow-hidden"
         >
-            {/* Background: Radar sweep SVG */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="relative w-[700px] h-[700px] opacity-[0.04]">
+            {/* Background: Radar sweep SVG — hidden on mobile for perf */}
+            <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
+                <div className="relative w-[500px] h-[500px] lg:w-[700px] lg:h-[700px] opacity-[0.04]">
                     {/* Concentric circles */}
                     {[1, 2, 3, 4].map(i => (
                         <div

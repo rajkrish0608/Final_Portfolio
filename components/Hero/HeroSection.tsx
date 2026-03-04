@@ -154,14 +154,14 @@ export function HeroSection() {
                         animate={{ top: '100%' }}
                         transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                     />
-                    {/* Corner HUD brackets */}
-                    <div className="absolute top-8 left-8 w-16 h-16 border-t-[1px] border-l-[1px] border-[#00d4ff33]" />
-                    <div className="absolute top-8 right-8 w-16 h-16 border-t-[1px] border-r-[1px] border-[#00d4ff33]" />
-                    <div className="absolute bottom-24 left-8 w-16 h-16 border-b-[1px] border-l-[1px] border-[#00d4ff33]" />
-                    <div className="absolute bottom-24 right-8 w-16 h-16 border-b-[1px] border-r-[1px] border-[#00d4ff33]" />
-                    {/* HUD Status text */}
+                    {/* Corner HUD brackets — hidden on mobile */}
+                    <div className="hidden md:block absolute top-8 left-8 w-16 h-16 border-t-[1px] border-l-[1px] border-[#00d4ff33]" />
+                    <div className="hidden md:block absolute top-8 right-8 w-16 h-16 border-t-[1px] border-r-[1px] border-[#00d4ff33]" />
+                    <div className="hidden md:block absolute bottom-24 left-8 w-16 h-16 border-b-[1px] border-l-[1px] border-[#00d4ff33]" />
+                    <div className="hidden md:block absolute bottom-24 right-8 w-16 h-16 border-b-[1px] border-r-[1px] border-[#00d4ff33]" />
+                    {/* HUD Status text — hidden on mobile */}
                     <motion.div
-                        className="absolute top-10 right-28 font-mono-hud text-[9px] text-[#00d4ff] tracking-[0.15em] opacity-40"
+                        className="hidden md:block absolute top-10 right-28 font-mono-hud text-[9px] text-[#00d4ff] tracking-[0.15em] opacity-40"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 0.4 }}
                         transition={{ delay: 1, duration: 1 }}
@@ -169,7 +169,7 @@ export function HeroSection() {
                         SYS.ONLINE // MARK.VII
                     </motion.div>
                     <motion.div
-                        className="absolute bottom-28 left-28 font-mono-hud text-[9px] text-[#00d4ff] tracking-[0.15em] opacity-30"
+                        className="hidden md:block absolute bottom-28 left-28 font-mono-hud text-[9px] text-[#00d4ff] tracking-[0.15em] opacity-30"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 0.3 }}
                         transition={{ delay: 1.5, duration: 1 }}

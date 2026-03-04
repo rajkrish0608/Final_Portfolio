@@ -19,8 +19,11 @@ export function HologramAvatar() {
     const ref = useRef<HTMLDivElement>(null)
     const inView = useInView(ref, { once: true, margin: '-100px' })
 
+    // Use a smaller orbit for mobile
+    const isMobileRef = useRef(typeof window !== 'undefined' && window.innerWidth < 768)
+
     return (
-        <div ref={ref} className="relative flex items-center justify-center w-full h-[480px] md:h-[560px]">
+        <div ref={ref} className="relative flex items-center justify-center w-full h-[360px] md:h-[480px] lg:h-[560px]">
 
             {/* ── Outer orbit ring ── */}
             <motion.div
@@ -31,7 +34,7 @@ export function HologramAvatar() {
 
             {/* ── Tech badges orbiting ── */}
             {TECH_BADGES.map((badge, i) => {
-                const radius = 185
+                const radius = isMobileRef.current ? 120 : 185
                 const angleRad = (badge.angle * Math.PI) / 180
                 const x = Math.cos(angleRad) * radius
                 const y = Math.sin(angleRad) * radius
