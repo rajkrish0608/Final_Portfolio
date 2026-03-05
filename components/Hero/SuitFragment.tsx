@@ -16,16 +16,15 @@ export interface SuitFragmentProps {
     isAssembled: boolean
 }
 
-// Generate varied procedural geometry based on fragment index
-function getGeometry(index: number): THREE.BufferGeometry {
-    const type = index % 5
+// Declarative geometry component prevents sharing the same WebGL buffer between solid and wireframe meshes
+function FragmentGeometry({ type }: { type: number }) {
     switch (type) {
-        case 0: return new THREE.IcosahedronGeometry(0.25, 0) // angular shard
-        case 1: return new THREE.OctahedronGeometry(0.3, 0)  // diamond piece
-        case 2: return new THREE.TetrahedronGeometry(0.35, 0) // triangle shard
-        case 3: return new THREE.BoxGeometry(0.5, 0.2, 0.15) // plate
-        case 4: return new THREE.CylinderGeometry(0.05, 0.15, 0.4, 6) // strut
-        default: return new THREE.IcosahedronGeometry(0.25, 0)
+        case 0: return <icosahedronGeometry args={[0.25, 0]} />
+        case 1: return <octahedronGeometry args={[0.3, 0]} />
+        case 2: return <tetrahedronGeometry args={[0.35, 0]} />
+        case 3: return <boxGeometry args={[0.5, 0.2, 0.15]} />
+        case 4: return <cylinderGeometry args={[0.05, 0.15, 0.4, 6]} />
+        default: return <icosahedronGeometry args={[0.25, 0]} />
     }
 }
 
@@ -44,8 +43,7 @@ export function SuitFragment({
     const animatedRef = useRef(false)
     const index = parseInt(id.replace('frag-', ''), 10) || 0
 
-    // Generate geometry once
-    const geometry = useMemo(() => getGeometry(index), [index])
+    const type = index % 5
 
     // Material — dark metal with subtle wireframe
     const material = useMemo(() => {
@@ -165,11 +163,15 @@ export function SuitFragment({
             rotation={spawnRotation}
             scale={[0.3, 0.3, 0.3]}
         >
-            <mesh ref={meshRef} geometry={geometry} castShadow receiveShadow>
+            {/* Solid Mesh */}
+            <mesh ref={meshRef} castShadow receiveShadow>
+                <FragmentGeometry type={type} />
                 <primitive object={material} attach="material" ref={matRef} />
             </mesh>
-            {/* Edge glow outline */}
-            <mesh geometry={geometry}>
+
+            {/* Edge glow outline (uses its own geometry buffer to prevent WebGL glDrawArrays crash) */}
+            <mesh>
+                <FragmentGeometry type={type} />
                 <meshBasicMaterial
                     color="#00d4ff"
                     wireframe
