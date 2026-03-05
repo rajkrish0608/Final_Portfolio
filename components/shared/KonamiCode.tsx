@@ -11,7 +11,7 @@ const KONAMI_CODE = [
 ]
 
 export function KonamiCode() {
-    const [inputSequence, setInputSequence] = useState<string[]>([])
+    const [, setInputSequence] = useState<string[]>([])
     const [activated, setActivated] = useState(false)
 
     useEffect(() => {

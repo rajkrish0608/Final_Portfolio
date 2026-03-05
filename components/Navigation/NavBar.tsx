@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useStore } from '@/lib/store'
 
@@ -107,8 +107,8 @@ export function NavBar() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className={`flex items-center justify-between px-6 py-4 transition-all duration-500 ${scrolled || menuOpen
-                            ? 'bg-[rgba(10,10,15,0.95)] backdrop-blur-xl border-b border-[rgba(0,212,255,0.12)]'
-                            : 'bg-transparent'
+                        ? 'bg-[rgba(10,10,15,0.95)] backdrop-blur-xl border-b border-[rgba(0,212,255,0.12)]'
+                        : 'bg-transparent'
                         }`}
                 >
                     <button

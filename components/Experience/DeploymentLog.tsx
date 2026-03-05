@@ -90,7 +90,7 @@ export function DeploymentLog() {
                                             {exp.title}
                                         </h3>
                                         <p className="font-rajdhani text-lg font-semibold text-[#8bb8cc]">
-                                            {exp.company} // <span className="text-sm font-normal opacity-60 uppercase tracking-widest">{exp.location}</span>
+                                            {exp.company} {'//'} <span className="text-sm font-normal opacity-60 uppercase tracking-widest">{exp.location}</span>
                                         </p>
                                     </div>
 

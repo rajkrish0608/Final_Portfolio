@@ -4,11 +4,14 @@ import { useEffect, useRef } from 'react'
 import { useStore } from '@/lib/store'
 
 export function useLoader() {
-    // Use getState() to get stable function references that never change
-    // This prevents the useEffect from re-running when Zustand updates state
+    // In React 18 Strict Mode, effects run twice (setup, cleanup, setup).
+    // If we use a ref to prevent double-running, we MUST reset it in cleanup,
+    // otherwise the second setup never runs the interval.
     const started = useRef(false)
 
     useEffect(() => {
+        // If the loader is already done in global state, don't restart it
+        if (useStore.getState().isLoading === false) return
         if (started.current) return
         started.current = true
 
@@ -29,7 +32,10 @@ export function useLoader() {
             }
         }, 120)
 
-        return () => clearInterval(interval)
+        return () => {
+            clearInterval(interval)
+            started.current = false // Reset for React 18 Strict Mode remounts
+        }
         // Empty dependency array — runs once on mount only
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
