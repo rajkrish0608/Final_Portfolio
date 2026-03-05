@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Sparkles } from '@react-three/drei'
+import { Environment, Sparkles } from '@react-three/drei'
 import { EffectComposer, Bloom, ChromaticAberration, Vignette, Noise } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import * as THREE from 'three'
@@ -121,25 +121,26 @@ function ArcReactorCore({ isAssembled }: { isAssembled: boolean }) {
         <group position={[0, 0.2, 0.5]}>
             {/* Outer ring */}
             <mesh ref={outerRef}>
-                <torusGeometry args={[0.35, 0.02, 16, 48]} />
-                <meshStandardMaterial
-                    color="#00d4ff"
+                <torusGeometry args={[0.35, 0.05, 16, 48]} />
+                <meshPhysicalMaterial
+                    color="#aaaaaa" // Silver metal
+                    metalness={0.9}
+                    roughness={0.2}
+                    clearcoat={1.0}
                     emissive="#00d4ff"
-                    emissiveIntensity={0.5}
-                    toneMapped={false}
-                    transparent
-                    opacity={0.8}
+                    emissiveIntensity={0.1}
                 />
             </mesh>
 
             {/* Inner ring */}
             <mesh ref={innerRef}>
-                <torusGeometry args={[0.2, 0.035, 16, 32]} />
-                <meshStandardMaterial
-                    color="#00aaff"
+                <torusGeometry args={[0.2, 0.04, 16, 32]} />
+                <meshPhysicalMaterial
+                    color="#1a1a1a" // Dark metal
+                    metalness={0.95}
+                    roughness={0.3}
                     emissive="#00d4ff"
-                    emissiveIntensity={0.1}
-                    toneMapped={false}
+                    emissiveIntensity={0.2}
                 />
             </mesh>
 
@@ -202,11 +203,15 @@ export function SuitAssembly() {
                 style={{ background: 'transparent' }}
             >
                 <Suspense fallback={null}>
-                    {/* Lighting - Local only, no external HDRI textures to prevent Suspense hang */}
-                    <ambientLight intensity={0.5} color="#8bb8cc" />
-                    <directionalLight position={[5, 8, 5]} intensity={1.5} color="#e8f4f8" />
-                    <directionalLight position={[-5, -3, -5]} intensity={0.8} color="#00d4ff" />
-                    <directionalLight position={[0, -5, 5]} intensity={0.5} color="#ffd700" />
+                    {/* Lighting - Enhanced for solid metallic reflections */}
+                    <ambientLight intensity={1.5} color="#e8f4f8" />
+                    <directionalLight position={[10, 10, 10]} intensity={3.5} color="#ffffff" castShadow />
+                    <directionalLight position={[-10, -10, -5]} intensity={2.0} color="#00d4ff" />
+                    <directionalLight position={[0, -10, 10]} intensity={2.5} color="#ffd700" />
+                    <spotLight position={[0, 15, 0]} angle={0.3} penumbra={1} intensity={4} color="#00d4ff" castShadow />
+
+                    {/* Crucial for metallic PBR reflections. Using standard preset which is small and fast. */}
+                    <Environment preset="city" environmentIntensity={1.2} />
 
                     {/* Suit Fragments */}
                     <group>

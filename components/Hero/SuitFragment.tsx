@@ -19,12 +19,12 @@ export interface SuitFragmentProps {
 // Declarative geometry component prevents sharing the same WebGL buffer between solid and wireframe meshes
 function FragmentGeometry({ type }: { type: number }) {
     switch (type) {
-        case 0: return <icosahedronGeometry args={[0.25, 0]} />
-        case 1: return <octahedronGeometry args={[0.3, 0]} />
-        case 2: return <tetrahedronGeometry args={[0.35, 0]} />
-        case 3: return <boxGeometry args={[0.5, 0.2, 0.15]} />
-        case 4: return <cylinderGeometry args={[0.05, 0.15, 0.4, 6]} />
-        default: return <icosahedronGeometry args={[0.25, 0]} />
+        case 0: return <icosahedronGeometry args={[0.35, 1]} /> // Detailed angular shard
+        case 1: return <octahedronGeometry args={[0.4, 1]} />  // Shield plate
+        case 2: return <tetrahedronGeometry args={[0.45, 1]} /> // Triangle plating
+        case 3: return <boxGeometry args={[0.6, 0.25, 0.2]} /> // Heavy strut
+        case 4: return <cylinderGeometry args={[0.1, 0.2, 0.5, 8]} /> // Mechanical piston/joint
+        default: return <icosahedronGeometry args={[0.35, 1]} />
     }
 }
 
@@ -45,21 +45,28 @@ export function SuitFragment({
 
     const type = index % 5
 
-    // Material — dark metal with subtle wireframe
+    // Materials — varied solid armor plates (Gunmetal, Deep Red, Silver, Dark Gray)
     const material = useMemo(() => {
+        let baseColor = '#1a1a1a' // Gunmetal
+
+        // Distribute colors based on fragment index to look like different suit parts
+        if (index % 4 === 1) baseColor = '#8b0000' // Deep Red accent
+        else if (index % 4 === 2) baseColor = '#aaaaaa' // Silver accent
+        else if (index % 4 === 3) baseColor = '#0f0f0f' // Dark plate
+
         return new THREE.MeshPhysicalMaterial({
-            color: new THREE.Color('#1a1a2e'),
-            metalness: 0.9,
-            roughness: 0.15,
-            clearcoat: 0.8,
+            color: new THREE.Color(baseColor),
+            metalness: 0.95,
+            roughness: 0.2,
+            clearcoat: 1.0,
             clearcoatRoughness: 0.1,
             emissive: new THREE.Color('#00d4ff'),
-            emissiveIntensity: 0.02,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.85,
+            emissiveIntensity: 0.0, // Only glows on lock
+            wireframe: false,
+            transparent: false,
+            opacity: 1.0,
         })
-    }, [])
+    }, [index])
 
     // Assembly animation — triggered by isAssembled prop
     useEffect(() => {
@@ -161,23 +168,12 @@ export function SuitFragment({
             ref={groupRef}
             position={spawnPosition}
             rotation={spawnRotation}
-            scale={[0.3, 0.3, 0.3]}
+            scale={[0.5, 0.5, 0.5]}
         >
-            {/* Solid Mesh */}
+            {/* Solid Armor Mesh */}
             <mesh ref={meshRef} castShadow receiveShadow>
                 <FragmentGeometry type={type} />
                 <primitive object={material} attach="material" ref={matRef} />
-            </mesh>
-
-            {/* Edge glow outline (uses its own geometry buffer to prevent WebGL glDrawArrays crash) */}
-            <mesh>
-                <FragmentGeometry type={type} />
-                <meshBasicMaterial
-                    color="#00d4ff"
-                    wireframe
-                    transparent
-                    opacity={0.08}
-                />
             </mesh>
         </group>
     )
